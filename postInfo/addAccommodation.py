@@ -6,7 +6,7 @@ from botocore.exceptions import ClientError
 import os
 from dotenv import load_dotenv
 from datetime import datetime
-import json
+import hashlib
 
 ''' Loading Environment files '''
 load_dotenv()
@@ -16,6 +16,7 @@ dynamoDbResource = boto3.resource(os.getenv("AWS_DYNAMO"), region_name=os.getenv
 ''' Configuring AWS Cognito '''
 cognitoClient = boto3.client(os.getenv("AWS_COGNITO"), region_name=os.getenv("AWS_REGION"))
 table_name = os.getenv("DYNAMO_ACCOMMODATION_TABLE")
+hashTable_name = os.getenv("DYNAMO_HASH_TABLE")
 
 '''signUp method will add a record to AWS Cognito and then add those info to User Info Dynamo DB, before
 adding to the cognito we will do a check if the email id is already present in the dynamo DB'''
@@ -28,11 +29,14 @@ def addAccommodation():
     try:
         '''Connect to the User Info table'''
         table = dynamoDbResource.Table(table_name)
+
         # logging.log("Table is connected")
+        addedDateTime=datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+
         item = {"name": request.json['name'],
                 "email": request.json['email'],
                 "eirCode": request.json['eirCode'],
-                "addedDateTime":datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
+                "addedDateTime":addedDateTime,
                 "area":request.json['area'],
                 "rent": request.json['rent'],
                 "institution": request.json['institution'],
@@ -41,8 +45,19 @@ def addAccommodation():
                 "duration": request.json['duration'],
                 "availability": request.json['availability']
                 }
-        '''After adding to the cognito pool add the basic info to user info table'''
+        strToHash=item.get("name")+item.get("email")+item.get("addedDateTime")
+        hash = hashlib.sha224(strToHash.encode())
+        item['hash']=hash.hexdigest()
         response=table.put_item(Item=item)
+
+        hashTable=dynamoDbResource.Table(hashTable_name)
+        hashItem={
+            "name": request.json['name'],
+            "email": request.json['email'],
+            "hash":hash.hexdigest(),
+            "addedDateTime":addedDateTime
+        }
+        hashTableResponse=hashTable.put_item(Item=hashItem)
         # logging.log("New User added to the Dynamo Db")
     except ClientError as e:
         logging.error(e)
