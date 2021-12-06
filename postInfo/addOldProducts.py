@@ -1,5 +1,5 @@
 from flask import request
-from postInfo import app
+from postInfo import application
 import boto3
 import logging
 from botocore.exceptions import ClientError
@@ -22,7 +22,7 @@ hashTable_name = os.getenv("DYNAMO_HASH_TABLE")
 adding to the cognito we will do a check if the email id is already present in the dynamo DB'''
 
 
-@app.route('/add-oldProducts', methods=['POST'])
+@application.route('/add-oldProducts', methods=['POST'])
 def addOldProducts():
     # logging.log("addAccommodation() request is "+json.dumps(request.get_json()))
     response = {}

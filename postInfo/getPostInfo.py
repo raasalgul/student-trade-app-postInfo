@@ -3,7 +3,7 @@ import logging
 
 from boto3.dynamodb.conditions import Key
 
-from postInfo import app
+from postInfo import application
 from flask import request
 from botocore.exceptions import ClientError
 import os
@@ -25,7 +25,7 @@ otherServices_table_name = os.getenv("DYNAMO_OTHERSERVICES_TABLE")
 ''' getUser() This method get the necessary user information from the user dynamo table. '''
 
 
-@app.route('/get-postInfo', methods=['POST'])
+@application.route('/get-postInfo', methods=['POST'])
 def getPostInfo():
     response = {}
     try:
