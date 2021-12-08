@@ -7,6 +7,7 @@ import os
 from dotenv import load_dotenv
 from datetime import datetime
 import hashlib
+import json
 
 ''' Loading Environment files '''
 load_dotenv()
@@ -24,14 +25,14 @@ adding to the cognito we will do a check if the email id is already present in t
 
 @application.route('/add-job', methods=['POST'])
 def addJob():
-    # logging.log("addAccommodation() request is "+json.dumps(request.get_json()))
+    logging.info("addAccommodation() request is "+json.dumps(request.get_json()))
     response = {}
     try:
         '''Connect to the User Info table'''
         table = dynamoDbResource.Table(table_name)
         
         addedDateTime=datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-        # logging.log("Table is connected")
+        logging.info("Table is connected")
         item = {"name": request.json['name'],
                 "email": request.json['email'],
                 "location": request.json['location'],
@@ -55,7 +56,7 @@ def addJob():
             "addedDateTime":addedDateTime
         }
         hashTableResponse=hashTable.put_item(Item=hashItem)
-        # logging.log("New User added to the Dynamo Db")
+        logging.info("New User added to the Dynamo Db")
     except ClientError as e:
         logging.error(e)
     return response

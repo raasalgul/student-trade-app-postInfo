@@ -41,7 +41,7 @@ def getAllPostInfo():
         ''' Connect with Other Services Dynamodb table '''
         otherServicesTable = dynamoDbResource.Table(otherServices_table_name)
 
-       # logging.log("getUser: Connected to table")
+        logging.info("getUser: Connected to table")
         ''' Get the entire items from the entire tables '''
         response = {
             "accommodation":accommodationTable.scan()['Items'],
@@ -52,7 +52,7 @@ def getAllPostInfo():
         }
         #print("scan "+accommodationTable.scan()['Items'])
         #print("scan " + accommodationTable.scan()['Items'])
-       # logging.log("getUser: Got response from table {}".format(response))
+        logging.info("getUser: Got response from table {}".format(response))
     except ClientError as e:
         logging.error(e)
     return response
