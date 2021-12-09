@@ -1,4 +1,4 @@
 from postInfo import application
 
-if __name__== "__main":
+if __name__== "__main__":
     application.run()
