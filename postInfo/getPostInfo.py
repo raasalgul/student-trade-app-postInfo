@@ -60,7 +60,7 @@ def getPostInfo():
             ''' Connect with Other Services Dynamodb table '''
             otherServicesTable = dynamoDbResource.Table(otherServices_table_name)
 
-            logging.log("getUser: Connected to table")
+            logging.info("getUser: Connected to table")
             ''' The key field is used to query the table '''
             key = {"email": request.json['email'],
                    "name":"Flat at dublin 1"
@@ -80,7 +80,7 @@ def getPostInfo():
             }
             #print("scan "+accommodationTable.scan()['Items'])
             #print("scan " + accommodationTable.scan()['Items'])
-            logging.log("getUser: Got response from table {}".format(response))
+            logging.info("getUser: Got response from table {}".format(response))
     except ClientError as e:
         logging.error(e)
     return response
