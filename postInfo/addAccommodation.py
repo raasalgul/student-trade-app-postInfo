@@ -90,4 +90,4 @@ def addAccommodation():
     except ClientError as e:
         print(e)
         logging.error(e)
-    return response
+    return item
