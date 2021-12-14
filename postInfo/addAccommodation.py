@@ -40,7 +40,7 @@ def addAccommodation():
         bearer = request.headers.get('Authorization')
         bearer = bearer.replace("Bearer ", "")
         responseUserData = cognitoClient.get_user(AccessToken=bearer)
-        userEmail = responseUserData['UserAttributes'][3]
+        userEmail = responseUserData['UserAttributes'][2]
         print(userEmail['Value'])
         userEmail = userEmail['Value']
 

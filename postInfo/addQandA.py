@@ -42,7 +42,7 @@ def addQAndA():
         responseUserData = cognitoClient.get_user(AccessToken=bearer)
         logging.info("Response user data {}".format(responseUserData))
         print(responseUserData)
-        userEmail = responseUserData['UserAttributes'][3]
+        userEmail = responseUserData['UserAttributes'][2]
         print(userEmail['Value'])
         userEmail = userEmail['Value']
         if responseUserData['ResponseMetadata']['HTTPStatusCode'] == 200:
