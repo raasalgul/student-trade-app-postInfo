@@ -68,7 +68,6 @@ def addQAndA():
                     "addedDateTime":addedDateTime,
                     "institution": req['institution'],
                     "description": req['description'],
-                    "answers": req['answers']
                     }
             strToHash = item.get("name") + item.get("email") + item.get("addedDateTime")
             hash = hashlib.sha224(strToHash.encode())
