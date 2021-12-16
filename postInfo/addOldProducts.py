@@ -88,4 +88,4 @@ def addOldProducts():
             logging.info("New User added to the Dynamo Db")
     except ClientError as e:
         logging.error(e)
-    return response
+    return item
